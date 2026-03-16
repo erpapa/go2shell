@@ -1,0 +1,16 @@
+/* Main view */
+"app.subtitle" = "Open terminal from current Finder directory";
+"settings.preferred_terminal" = "Preferred Terminal";
+"settings.not_installed" = "(Not Installed)";
+
+/* Instructions */
+"instructions.title" = "How to Use";
+"instructions.step1.title" = "Drag to Finder Toolbar";
+"instructions.step1.detail" = "Hold ⌘ key and drag the go2shell icon to any Finder window's toolbar";
+"instructions.step2.title" = "Click to Open Terminal";
+"instructions.step2.detail" = "Click the go2shell icon in any Finder window's toolbar to open a terminal in the current directory";
+"instructions.settings.title" = "Change Settings";
+"instructions.settings.detail" = "Double-click the app icon in the Applications folder to open this settings window";
+
+/* Tip */
+"tip.open_settings" = "Tip: Double-click the app icon in the Applications folder to open this settings window";
