@@ -6,6 +6,7 @@ enum L10n {
     static let appSubtitle = NSLocalizedString("app.subtitle", bundle: bundle, comment: "")
     static let preferredTerminal = NSLocalizedString("settings.preferred_terminal", bundle: bundle, comment: "")
     static let notInstalled = NSLocalizedString("settings.not_installed", bundle: bundle, comment: "")
+    static let fallbackNote = NSLocalizedString("settings.fallback_note", bundle: bundle, comment: "")
     static let instructionsTitle = NSLocalizedString("instructions.title", bundle: bundle, comment: "")
     static let step1Title = NSLocalizedString("instructions.step1.title", bundle: bundle, comment: "")
     static let step1Detail = NSLocalizedString("instructions.step1.detail", bundle: bundle, comment: "")

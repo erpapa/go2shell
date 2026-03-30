@@ -2,6 +2,7 @@
 "app.subtitle" = "Open terminal from current Finder directory";
 "settings.preferred_terminal" = "Preferred Terminal";
 "settings.not_installed" = "(Not Installed)";
+"settings.fallback_note" = "If the selected terminal is unavailable, the system default terminal will be used automatically.";
 
 /* Instructions */
 "instructions.title" = "How to Use";

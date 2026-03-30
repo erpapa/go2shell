@@ -103,6 +103,9 @@ struct MainView: View {
                         }
                     }
                 }
+                Text(L10n.fallbackNote)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
             .padding()
             .background(Color(NSColor.controlBackgroundColor))

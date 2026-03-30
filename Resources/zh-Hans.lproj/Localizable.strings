@@ -2,6 +2,7 @@
 "app.subtitle" = "在 Finder 当前目录快速打开终端";
 "settings.preferred_terminal" = "首选终端";
 "settings.not_installed" = "（未安装）";
+"settings.fallback_note" = "如果选择的终端不可用，将自动使用系统默认终端";
 
 /* Instructions */
 "instructions.title" = "使用方法";
