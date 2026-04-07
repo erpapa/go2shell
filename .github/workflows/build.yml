@@ -22,13 +22,7 @@ jobs:
         with:
           ref: ${{ inputs.tag || github.ref }}
 
-      - name: Detect Swift version
-        id: swift-version
-        run: echo "version=$(sed -n 's/.*swift-tools-version:[[:space:]]*//p' Package.swift)" >> "$GITHUB_OUTPUT"
-
       - uses: swift-actions/setup-swift@v3
-        with:
-          swift-version: ${{ steps.swift-version.outputs.version }}
 
       - name: Build
         run: make build
