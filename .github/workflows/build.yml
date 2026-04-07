@@ -58,9 +58,11 @@ jobs:
 
       - name: Prepare release assets
         run: |
+          echo "Artifact structure:"
+          ls -R artifacts
           mkdir -p release-assets
-          cp artifacts/macos-arm64/go2shell.zip release-assets/
-          cp artifacts/macos-arm64/go2shell.zip.sha256 release-assets/
+          find artifacts -name "go2shell.zip" -exec cp {} release-assets/ \;
+          find artifacts -name "go2shell.zip.sha256" -exec cp {} release-assets/ \;
           ls -lh release-assets/
 
       - name: Upload Release Assets
