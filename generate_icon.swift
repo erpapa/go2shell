@@ -2,72 +2,90 @@
 import Cocoa
 import AppKit
 
-// 创建一个 1024x1024 的图标
-let size = CGSize(width: 1024, height: 1024)
-let image = NSImage(size: size)
-
-image.lockFocus()
-
-// 绘制蓝色圆角矩形背景
-let rect = NSRect(origin: .zero, size: size)
-let cornerRadius: CGFloat = 180.0 // 圆角半径
-
-// 创建蓝色渐变（从浅蓝到深蓝）
-let colorSpace = CGColorSpaceCreateDeviceRGB()
-let colors = [
-    NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0).cgColor,  // 浅蓝
-    NSColor(red: 0.2, green: 0.5, blue: 0.9, alpha: 1.0).cgColor   // 深蓝
-] as CFArray
-
-let gradient = CGGradient(
-    colorsSpace: colorSpace,
-    colors: colors,
-    locations: [0.0, 1.0]
+let pixels: CGFloat = 1024
+let bitmap = NSBitmapImageRep(
+    bitmapDataPlanes: nil,
+    pixelsWide: Int(pixels),
+    pixelsHigh: Int(pixels),
+    bitsPerSample: 8,
+    samplesPerPixel: 4,
+    hasAlpha: true,
+    isPlanar: false,
+    colorSpaceName: .deviceRGB,
+    bytesPerRow: 0,
+    bitsPerPixel: 0
 )!
 
-// 创建圆角矩形路径
+let context = NSGraphicsContext(bitmapImageRep: bitmap)!
+NSGraphicsContext.saveGraphicsState()
+NSGraphicsContext.current = context
+
+let left: CGFloat = 100
+let top: CGFloat = 200
+let rect = NSRect(x: left, y: top, width: pixels - left * 2, height: pixels - top * 2)
+
+// ===== 背景 =====
+let cornerRadius: CGFloat = 140
+
+let bgColor = NSColor(calibratedWhite: 1.0, alpha: 1.0)
 let path = NSBezierPath(roundedRect: rect, xRadius: cornerRadius, yRadius: cornerRadius)
 
-// 裁剪到圆角矩形
-path.addClip()
+// 填充背景
+bgColor.setFill()
+path.fill()
 
-// 绘制渐变
-let context = NSGraphicsContext.current!.cgContext
-context.drawLinearGradient(
-    gradient,
-    start: CGPoint(x: 0, y: size.height),
-    end: CGPoint(x: 0, y: 0),
-    options: []
-)
+// 边框
+// path.lineWidth = 18
+// let borderColor = NSColor(calibratedWhite: 0.525, alpha: 1.0)
+// borderColor.setStroke()
+// path.stroke()
 
-// 绘制白色的终端符号 "> _"
-let attributes: [NSAttributedString.Key: Any] = [
-    .font: NSFont.systemFont(ofSize: 400, weight: .semibold),
-    .foregroundColor: NSColor.white
-]
+// ===== 绘制表情 =====
+let strokeColor = NSColor(calibratedWhite: 0.525, alpha: 1.0)
+strokeColor.setStroke()
 
-let text = "> _" as NSString
-let textSize = text.size(withAttributes: attributes)
-let textRect = NSRect(
-    x: (size.width - textSize.width) / 2,
-    y: (size.height - textSize.height) / 2 + 20,
-    width: textSize.width,
-    height: textSize.height
-)
+let lineWidth: CGFloat = 36
+let eyeOffset: CGFloat = 50
+let eyeWidth: CGFloat = 140
+let leftEyeX: CGFloat = left + cornerRadius
+let rightEyeX: CGFloat = pixels - left - cornerRadius
 
-text.draw(in: textRect, withAttributes: attributes)
+// 左眼 ">"
+let leftEye = NSBezierPath()
+leftEye.lineWidth = lineWidth
+leftEye.lineCapStyle = .square
 
-image.unlockFocus()
+leftEye.move(to: CGPoint(x: leftEyeX, y: top + cornerRadius + eyeOffset))
+leftEye.line(to: CGPoint(x: leftEyeX + eyeWidth, y: pixels * 0.5 + eyeOffset * 0.5))
+leftEye.line(to: CGPoint(x: leftEyeX, y: pixels - top - cornerRadius))
+leftEye.stroke()
 
-// 保存为 PNG
-if let tiffData = image.tiffRepresentation,
-   let bitmapImage = NSBitmapImageRep(data: tiffData),
-   let pngData = bitmapImage.representation(using: .png, properties: [:]) {
+// 右眼 "<"
+let rightEye = NSBezierPath()
+rightEye.lineWidth = lineWidth
+rightEye.lineCapStyle = .square
 
+rightEye.move(to: CGPoint(x: rightEyeX, y: top + cornerRadius + eyeOffset))
+rightEye.line(to: CGPoint(x: rightEyeX - eyeWidth, y: pixels * 0.5 + eyeOffset * 0.5))
+rightEye.line(to: CGPoint(x: rightEyeX, y: pixels - top - cornerRadius))
+rightEye.stroke()
+
+// 嘴巴 "_"
+let mouth = NSBezierPath()
+mouth.lineWidth = lineWidth
+mouth.lineCapStyle = .square
+
+mouth.move(to: CGPoint(x: leftEyeX + eyeWidth + lineWidth + 8, y: top + cornerRadius + eyeOffset - lineWidth * 2))
+mouth.line(to: CGPoint(x: rightEyeX - eyeWidth - lineWidth - 8, y: top + cornerRadius + eyeOffset - lineWidth * 2))
+mouth.stroke()
+
+NSGraphicsContext.restoreGraphicsState()
+
+// 保存 PNG
+if let pngData = bitmap.representation(using: .png, properties: [:]) {
     let url = URL(fileURLWithPath: "Resources/icon.png")
     try? pngData.write(to: url)
-    print("✅ 图标已生成: Resources/icon.png")
+    print("✅ 图标已生成: Resources/icon.png (1024x1024)")
 } else {
-    print("❌ 生成图标失败")
-    exit(1)
+    print("❌ 图标生成失败")
 }
