@@ -18,7 +18,7 @@ let package = Package(
             name: "go2shell",
             path: "Sources",
             resources: [
-                .copy("../Resources")
+                .process("../Resources")
             ]
         )
     ]

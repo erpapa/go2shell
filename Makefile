@@ -74,30 +74,37 @@ build:
 # 创建 App Bundle 结构
 create-bundle:
 	@rm -rf $(APP_BUNDLE)
+	@mkdir -p $(APP_BUNDLE)/Contents
+
+	# 复制主应用配置
+	@if [ -f Resources/Info.plist ]; then \
+		cp Resources/Info.plist $(APP_BUNDLE)/Contents/; \
+	fi
+
+	# 创建 MacOS 目录
 	@mkdir -p $(APP_BUNDLE)/Contents/MacOS
-	@mkdir -p $(APP_BUNDLE)/Contents/Resources
 
 	# 复制主应用可执行文件
 	@cp $(RELEASE_DIR)/go2shell $(APP_BUNDLE)/Contents/MacOS/
 
 	# 复制 SPM resource bundle（本地化资源等）
-	@for bundle in $(BUILD_DIR)/release/*.bundle; do \
-		if [ -d "$$bundle" ]; then \
-			cp -r "$$bundle" $(APP_BUNDLE)/Contents/Resources/; \
-		fi; \
-	done
+	@if [ -d $(BUILD_DIR)/release/$(APP_NAME)_$(APP_NAME).bundle/Resources ]; then \
+		cp -rf $(BUILD_DIR)/release/$(APP_NAME)_$(APP_NAME).bundle/Resources $(APP_BUNDLE)/Contents/; \
+	fi
 
-	# 复制主应用配置
-	@cp Resources/Info.plist $(APP_BUNDLE)/Contents/
+	# 创建 Resources 目录，防止 SPM 未打包 bundle 文件
+	@mkdir -p $(APP_BUNDLE)/Contents/Resources
 
-	# 复制图标（如果存在）
-	@if [ -f Resources/AppIcon.icns ]; then \
+	# 复制图标（如果目标目录下不存在，并且当前目录下图标存在）
+	@if [ ! -f $(APP_BUNDLE)/Contents/Resources/AppIcon.icns ] && [ -f Resources/AppIcon.icns ]; then \
 		cp Resources/AppIcon.icns $(APP_BUNDLE)/Contents/Resources/; \
 	fi
 
-	# 复制本地化资源
+	# 复制本地化资源（如果目标目录下不存在，并且当前目录下资源存在）
 	@for lproj in Resources/*.lproj; do \
-		if [ -d "$$lproj" ]; then \
+		lproj_name=$$(basename "$$lproj"); \
+		target_lproj="$(APP_BUNDLE)/Contents/Resources/$$lproj_name"; \
+		if [ ! -d "$$target_lproj" ] && [ -d "$$lproj" ]; then \
 			cp -r "$$lproj" $(APP_BUNDLE)/Contents/Resources/; \
 		fi; \
 	done
