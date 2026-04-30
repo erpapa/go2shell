@@ -27,6 +27,8 @@
 - ✅ **Warp**
 - ✅ **Ghostty**
 - ✅ **WezTerm**
+- ✅ **Kitty**
+- ✅ **Alacritty**
 
 > 如果首选终端被卸载，会自动回退到系统内置的 Terminal.app。
 
@@ -47,6 +49,14 @@ brew upgrade solarhell/tap/go2shell
 ```bash
 make install
 ```
+
+> ⚠️ **注意**：应用未经 notarize，首次打开可能被 macOS Gatekeeper 拦截。解决方法：
+>
+> ```bash
+> xattr -d com.apple.quarantine /Applications/go2shell.app
+> ```
+>
+> 或前往 **系统设置 > 隐私与安全性**，点击"仍要打开"。
 
 ## 🎯 使用方式
 
@@ -186,7 +196,7 @@ make build
 ### 方式二：通过 Option 键
 
 按住 Option (⌥) 键点击应用图标即可打开设置界面，在那里你可以：
-- 选择首选终端（Terminal.app、iTerm2、Warp、Ghostty、WezTerm）
+- 选择首选终端（Terminal.app、iTerm2、Warp、Ghostty、WezTerm、Kitty、Alacritty）
 - 查看使用说明
 - 了解应用信息
 
@@ -207,6 +217,12 @@ defaults write com.solarhell.go2shell PreferredTerminal Ghostty
 
 # 设置为 WezTerm
 defaults write com.solarhell.go2shell PreferredTerminal WezTerm
+
+# 设置为 Kitty
+defaults write com.solarhell.go2shell PreferredTerminal Kitty
+
+# 设置为 Alacritty
+defaults write com.solarhell.go2shell PreferredTerminal Alacritty
 ```
 
 ### 开发测试
@@ -342,7 +358,7 @@ killall Finder
 
 ## 🔮 未来计划
 
-- [x] 支持 Terminal.app、iTerm2、Warp、Ghostty、WezTerm
+- [x] 支持 Terminal.app、iTerm2、Warp、Ghostty、WezTerm、Kitty、Alacritty
 - [x] 使用应用原生图标
 - [x] 未安装终端灰显提示，首选终端被卸载自动回退
 - [ ] 支持在新标签页或新窗口中打开

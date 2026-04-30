@@ -26,6 +26,8 @@ The app auto-detects the following terminals. Uninstalled ones are greyed out:
 - **Warp**
 - **Ghostty**
 - **WezTerm**
+- **Kitty**
+- **Alacritty**
 
 > If the preferred terminal is uninstalled, it automatically falls back to the built-in Terminal.app.
 
@@ -51,6 +53,14 @@ make install
 
 # Done! Click the toolbar icon to open a terminal in the current directory.
 ```
+
+> **Note**: The app is not notarized. macOS Gatekeeper may block it on first launch. To bypass:
+>
+> ```bash
+> xattr -d com.apple.quarantine /Applications/go2shell.app
+> ```
+>
+> Or go to **System Settings > Privacy & Security** and click "Open Anyway".
 
 ## Usage
 
@@ -86,10 +96,12 @@ defaults write com.solarhell.go2shell PreferredTerminal Terminal
 # Set to iTerm2
 defaults write com.solarhell.go2shell PreferredTerminal iTerm
 
-# Set to Warp / Ghostty / WezTerm
+# Set to Warp / Ghostty / WezTerm / Kitty / Alacritty
 defaults write com.solarhell.go2shell PreferredTerminal Warp
 defaults write com.solarhell.go2shell PreferredTerminal Ghostty
 defaults write com.solarhell.go2shell PreferredTerminal WezTerm
+defaults write com.solarhell.go2shell PreferredTerminal Kitty
+defaults write com.solarhell.go2shell PreferredTerminal Alacritty
 ```
 
 ## System Requirements
@@ -149,7 +161,7 @@ go2shell/
 
 ## Roadmap
 
-- [x] Support Terminal.app, iTerm2, Warp, Ghostty, WezTerm
+- [x] Support Terminal.app, iTerm2, Warp, Ghostty, WezTerm, Kitty, Alacritty
 - [x] Native app icons
 - [x] Grey out uninstalled terminals, auto-fallback on uninstall
 - [ ] Open in new tab or new window
